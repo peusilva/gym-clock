@@ -7,10 +7,11 @@ import './App.css'
 function App() {
   const [state, setState] = useState(true);
   const [playing, setPlaying] = useState(false);
-  const [sessionLength, setSession] = useState(25);
-  const [breakLength, setBreak] = useState(5);
+  const [sessionLength, setSession] = useState(1500);
+  const [breakLength, setBreak] = useState(300);
   const [timer, setTimer] = useState(sessionLength);
   
+  const audio = document.getElementById("beep");
 
   useEffect(() => {
     const interval = setInterval(() => { 
@@ -18,6 +19,7 @@ function App() {
       setTimer((timer)=> timer - 1)
       }
       if(timer===0){
+        audio.play();
         if(state){
           setTimer(breakLength)
         }
@@ -39,6 +41,8 @@ function App() {
          setBreak={setBreak}
          sessionLength={sessionLength}
          setSession={setSession}
+         setTimer={setTimer}
+         timer={timer}
          />
         <Display timer={timer} state={state}/>
         <div id=''>
@@ -49,14 +53,17 @@ function App() {
         </button>
         <button id='reset' onClick={() => {
             setPlaying(false);
-            setTimer(sessionLength);
-            setBreak(5);
-            setSession(5);
+            setBreak(300);
+            setSession(1500);
+            setTimer(1500);
             setState(true);
+            audio.pause();
+            audio.currentTime = 0;
         }}>
         ↺
         </button>
         </div>
+        <audio id="beep" preload="auto" src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"></audio>
       </div>
     </>
   )
